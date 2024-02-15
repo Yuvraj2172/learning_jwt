@@ -7,7 +7,7 @@ const login = async (req, res) => {
     throw new CustomAPIError("Invalid username or password", 400);
   }
   //just for demon, generally provided by the DB
-  const id = new Date().getTime();
+  const id = new Date().getDay();
   const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
     expiresIn: "15days",
   });
@@ -18,13 +18,13 @@ const login = async (req, res) => {
 };
 
 const dashboard = async (req, res) => {
+  //verify
+  console.log(req.user);
   const luckyNumber = Math.floor(Math.random() * 100);
-  //   console.log('route is working fine');
   res.status(200).json({
-    msg: `Hello Yuvraj Soni!`,
+    msg: `Hello ${req.user.username}!`,
     secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
   });
-  console.log("working fine");
 };
 
 module.exports = {
